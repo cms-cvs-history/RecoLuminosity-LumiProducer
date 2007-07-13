@@ -1,0 +1,16 @@
+
+
+<use name=cppunit>
+<use name=FWCore/Framework>
+<use name=FWCore/PluginManager>
+<use name=DataFormats/Luminosity>
+
+<bin file=TestIntegration.cpp name=TestLumiProd>
+  <flags TEST_RUNNER_ARGS=" /bin/bash RecoLuminosity/LumiProducer/test run_lumiProd.sh">
+  <use name=FWCore/Utilities>
+</bin>
+
+<library file="TestLumiProducer.cc" name=TestLumiProducer>
+  <flags EDM_PLUGIN=1>
+</library>
+
