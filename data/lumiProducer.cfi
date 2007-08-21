@@ -49,8 +49,8 @@ module lumiProducer = LumiProducer {
         200.0, 201.0, 202.0, 203.0, 204.0
       }
 
-      untracked vdouble lumietsumqual = {
-        300.0, 301.0, 302.0, 303.0, 304.0
+      untracked vint32 lumietsumqual = {
+        300, 301, 302, 303, 304
       }
 
       untracked vdouble lumiocc = {
@@ -61,8 +61,8 @@ module lumiProducer = LumiProducer {
         500.0, 501.0, 502.0, 503.0, 504.0
       }
 
-      untracked vdouble lumioccqual = {
-        600.0, 601.0, 602.0, 603.0, 604.0
+      untracked vint32 lumioccqual = {
+        600, 601, 602, 603, 604
       }
     }
 }
