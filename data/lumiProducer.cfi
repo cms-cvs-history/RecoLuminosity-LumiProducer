@@ -15,8 +15,8 @@ module lumiProducer = LumiProducer {
     # of multiple luminosity sections in the job.
     untracked PSet LS1 = {
 
-      untracked double avginslumi = 1.0
-      untracked double avginslumierr = 2.0
+      untracked double avginsdellumi = 1.0
+      untracked double avginsdellumierr = 2.0
       untracked int32 lumisecqual = 3
       untracked double deadfrac = 0.05
       untracked int32 lsnumber = 5
