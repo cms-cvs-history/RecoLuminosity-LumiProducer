@@ -1,0 +1,31 @@
+    what's in onlinedb                          what's in offline root branch
+summary.DEADTIME_NORMALIZATION            LumiSummary.deadfrac_ 
+summary.NORMALIZATION
+summary.INSTANT_LUMI
+summary.INSTANT_LUMI_ERR
+summary.INSTANT_LUMI_QLTY
+summary.NORMALIZATION_ET
+summary.INSTANT_ET_LUMI                    LumiSummary.avginsdellumi_
+summary.INSTANT_ET_LUMI_ERR                LumiSummary.avginsdellumierr_
+summary.INSTANT_ET_LUMI_QLTY               LumiSummary.lumisecqual_
+summary.NORMALIZATION_OCC_D1      
+summary.INSTANT_OCC_LUMI_D1
+summary.INSTANT_OCC_LUMI_D1_ERR 
+summary.INSTANT_OCC_LUMI_D1_QLTY
+summary.NORMALIZATION_OCC_D2
+summary.INSTANT_OCC_LUMI_D2_ERR
+summary.INSTANT_OCC_LUMI_D2_QLTY
+sect.LUMI_SECTION_NUMBER                   LumiSummary.lsnumber_
+bx.BUNCH_X_NUMBER                         
+bx.NORMALIZATION_ET 
+bx.ET_LUMI                                 LumiDetails.lumietsum_
+bx.ET_LUMI_ERR                             LumiDetails.lumietsumerr_
+bx.ET_LUMI_QLTY                            LumiDetails.lumietsumqual_
+bx.NORMALIZATION_OCC_D1                    
+bx.OCC_LUMI_D1                             LumiDetails.lumiocc_
+bx.OCC_LUMI_D1_ERR                         LumiDetails.lumioccerr_
+bx.OCC_LUMI_D1_QLTY                        LumiDetails.lumioccqual_
+bx.NORMALIZATION_OCC_D2
+bx.OCC_LUMI_D2
+bx.OCC_LUMI_D2_ERR
+bx.OCC_LUMI_D2_QLTY 
