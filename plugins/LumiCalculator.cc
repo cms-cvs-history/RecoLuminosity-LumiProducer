@@ -37,7 +37,7 @@ public:
   virtual ~LumiCalculator();
 
 private:  
-  virtual void beginJob(const edm::EventSetup& );
+  virtual void beginJob();
   virtual void beginRun(const edm::Run& run, const edm::EventSetup& c);
   virtual void analyze(edm::Event const& e, edm::EventSetup const& c);
   virtual void endLuminosityBlock(edm::LuminosityBlock const& lumiBlock, 
@@ -76,7 +76,7 @@ void LumiCalculator::analyze(edm::Event const& e,edm::EventSetup const&){
 
 // -----------------------------------------------------------------
 
-void LumiCalculator::beginJob(const edm::EventSetup& c){
+void LumiCalculator::beginJob(){
   
 }
 
