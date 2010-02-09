@@ -16,3 +16,8 @@
 <library file="testEvtLoop.cc" name=testEvtLoop>
   <flags EDM_PLUGIN=1>
 </library>
+
+<library file="genLumiRaw.cc" name=genLumiRaw>
+  <use name=rootcore>	
+  <flags EDM_PLUGIN=1>
+</library>
