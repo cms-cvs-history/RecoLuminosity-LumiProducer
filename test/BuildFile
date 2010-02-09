@@ -9,6 +9,10 @@
   <use name=FWCore/Utilities>
 </bin>
 
+<bin file=standaloneScanLumiRaw.cpp name=standaloneScanLumiRaw>
+   <use name=rootcore>
+</bin>
+
 <library file="TestLumiProducer.cc" name=TestLumiProducer>
   <flags EDM_PLUGIN=1>
 </library>
