@@ -9,6 +9,11 @@
   <use name=FWCore/Utilities>
 </bin>
 
+<bin file=testWrite2LumiDB.cpp name=testWrite2LumiDB>
+  <use name=FWCore/PluginManager>
+  <use name=RecoLuminosity/LumiProducer>
+</bin>
+
 <bin file=standaloneScanLumiRaw.cpp name=standaloneScanLumiRaw>
    <use name=rootcore>
 </bin>
@@ -25,3 +30,4 @@
   <use name=rootcore>	
   <flags EDM_PLUGIN=1>
 </library>
+
