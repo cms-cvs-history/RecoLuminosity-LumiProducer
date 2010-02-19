@@ -17,6 +17,7 @@
 </bin>
 
 <bin file=standaloneScanLumiRaw.cpp name=standaloneScanLumiRaw>
+<use name=RecoLuminosity/LumiProducer>
    <use name=rootcore>
 </bin>
 
@@ -30,6 +31,7 @@
 
 <library file="genLumiRaw.cc" name=genLumiRaw>
   <use name=rootcore>	
+<use name=RecoLuminosity/LumiProducer>
   <flags EDM_PLUGIN=1>
 </library>
 
