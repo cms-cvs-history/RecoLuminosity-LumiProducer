@@ -21,6 +21,9 @@
   <use name=rootcore>
 </bin>
 
+<bin file=parseLSstate.cpp name=parseLSstate>
+</bin>
+
 <bin file=validation/populateDummy2LumiDB.cpp name=populateDummy2LumiDB>
   <use name=FWCore/PluginManager>
   <use name=RecoLuminosity/LumiProducer>	
