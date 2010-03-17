@@ -17,11 +17,13 @@
 </bin>
 
 <bin file=standaloneScanLumiRaw.cpp name=standaloneScanLumiRaw>
-<use name=RecoLuminosity/LumiProducer>
+  <use name=RecoLuminosity/LumiProducer>
   <use name=rootcore>
 </bin>
 
 <bin file=parseLSstate.cpp name=parseLSstate>
+  <use name=CoralBase>
+  <use name=RelationalAccess>
 </bin>
 
 <bin file=validation/populateDummy2LumiDB.cpp name=populateDummy2LumiDB>
