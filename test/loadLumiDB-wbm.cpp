@@ -24,9 +24,9 @@ int main(int argc, char** argv){
   time_t t1,t2;
   edmplugin::PluginManager::Config config;
   edmplugin::PluginManager::configure(edmplugin::standard::config());
-  //const std::string con("sqlite_file:wbm.db");
+  const std::string con("sqlite_file:wbm.db");
   //const std::string con("oracle://devdb10/cms_xiezhen_dev");
-  const std::string con("oracle://cms_orcoff_prep/cms_lumi_dev_offline");
+  //const std::string con("oracle://cms_orcoff_prep/cms_lumi_dev_offline");
   const std::string authpath("/afs/cern.ch/user/x/xiezhen");
   //fill lhx data
   
