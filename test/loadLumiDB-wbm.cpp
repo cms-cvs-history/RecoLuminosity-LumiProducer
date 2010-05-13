@@ -25,8 +25,8 @@ int main(int argc, char** argv){
   edmplugin::PluginManager::Config config;
   edmplugin::PluginManager::configure(edmplugin::standard::config());
   //const std::string con("sqlite_file:wbm.db");
-  const std::string con("oracle://devdb10/cms_xiezhen_dev");
-  //const std::string con("oracle://cms_orcoff_prep/cms_lumi_dev_offline");
+  //const std::string con("oracle://devdb10/cms_xiezhen_dev");
+  const std::string con("oracle://cms_orcoff_prep/cms_lumi_dev_offline");
   const std::string authpath("/afs/cern.ch/user/x/xiezhen");
   //fill lhx data
   
@@ -37,9 +37,7 @@ int main(int argc, char** argv){
     ptr->setSource(lumifile);
     startClock=clock();
     time(&t1);
-    std::cout<<"about to retrieve data"<<std::endl;
     ptr->retrieveData(runnumber);
-    std::cout<<"done"<<std::endl;
     time(&t2);
     endClock=clock();
   }catch(...){
@@ -114,7 +112,7 @@ int main(int argc, char** argv){
   elapsedTime=((double) (endClock - startClock)) / CLOCKS_PER_SEC;
   std::cout<<"CPU Time taken in seconds : "<<elapsedTime<<std::endl;
   //fill hlt scaler data
-  /**
+  
   try{
     std::cout<<"fill out hlt data"<<std::endl;
     std::auto_ptr<lumi::DataPipe> hltptr(lumi::DataPipeFactory::get()->create("HLT2DB",con));
@@ -132,6 +130,6 @@ int main(int argc, char** argv){
   }
   printf("Elaspsed time %fs\n",difftime(t2,t1));
   std::cout<<"CPU Time taken in seconds : "<<elapsedTime<<std::endl;
-  **/
+  
   return 0;
 }
