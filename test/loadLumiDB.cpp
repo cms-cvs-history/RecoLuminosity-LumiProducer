@@ -25,8 +25,8 @@ int main(int argc, char** argv){
   edmplugin::PluginManager::Config config;
   edmplugin::PluginManager::configure(edmplugin::standard::config());
   //const std::string con("sqlite_file:pippo.db");
-  const std::string con("oracle://devdb10/cms_xiezhen_dev");
-  //const std::string con("oracle://cms_orcoff_prep/cms_lumi_dev_offline");
+  //const std::string con("oracle://devdb10/cms_xiezhen_dev");
+  const std::string con("oracle://cms_orcoff_prep/cms_lumi_dev_offline");
   const std::string authpath("/afs/cern.ch/user/x/xiezhen");
   //fill lhx data
   
@@ -93,8 +93,8 @@ int main(int argc, char** argv){
   std::cout<<"CPU Time taken in seconds : "<<elapsedTime<<std::endl;
   //fill trg data
   try{
-    std::cout<<"fill out trg/wbm data"<<std::endl;
-    std::auto_ptr<lumi::DataPipe> trgptr(lumi::DataPipeFactory::get()->create("TRGWBM2DB",con));
+    std::cout<<"fill out trg data"<<std::endl;
+    std::auto_ptr<lumi::DataPipe> trgptr(lumi::DataPipeFactory::get()->create("TRG2DB",con));
     trgptr->setAuthPath(authpath);
     //trgptr->setSource("oracle://cms_omds_lb/CMS_GT_MON");
     trgptr->setSource("oracle://cms_orcoff_prod/CMS_GT_MON");
