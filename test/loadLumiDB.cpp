@@ -1,6 +1,7 @@
 #include "FWCore/PluginManager/interface/PluginManager.h"
 #include "FWCore/PluginManager/interface/standard.h"
 #include "RecoLuminosity/LumiProducer/interface/DataPipe.h"
+#include "RecoLuminosity/LumiProducer/interface/Exception.h"
 #include "RecoLuminosity/LumiProducer/interface/DataPipeFactory.h"
 #include <sstream>
 #include <iostream>
@@ -30,7 +31,7 @@ int main(int argc, char** argv){
   const std::string authpath("/afs/cern.ch/user/x/xiezhen");
   //fill lhx data
   
-  std::cout<<"filling hlx/dip data"<<std::endl;
+  /** std::cout<<"filling hlx/dip data"<<std::endl;
 
   try{
     std::auto_ptr<lumi::DataPipe> ptr(lumi::DataPipeFactory::get()->create("Lumi2DB",con));
@@ -48,7 +49,7 @@ int main(int argc, char** argv){
   printf("Elaspsed time %fs\n",difftime(t2,t1));
   elapsedTime=((double) (endClock - startClock)) / CLOCKS_PER_SEC;
   std::cout<<"CPU Time taken in seconds : "<<elapsedTime<<std::endl;
-
+  **/
   //
   //fill runsummary data
   //
@@ -63,6 +64,9 @@ int main(int argc, char** argv){
     runptr->retrieveData(runnumber);
     time(&t2);
     endClock=clock();
+  }catch(const lumi::nonCollisionException& er){
+    std::cout<<"not a collision run, skip "<<std::endl;
+    return 0;
   }catch(...){
     std::cout<<"problem in loading run "<<runnumber<<" skip "<<std::endl;
     throw;
