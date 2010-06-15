@@ -29,27 +29,7 @@ int main(int argc, char** argv){
   //const std::string con("oracle://devdb10/cms_xiezhen_dev");
   const std::string con("oracle://cms_orcoff_prep/cms_lumi_dev_offline");
   const std::string authpath("/afs/cern.ch/user/x/xiezhen");
-  //fill lhx data
-  
-  /** std::cout<<"filling hlx/dip data"<<std::endl;
 
-  try{
-    std::auto_ptr<lumi::DataPipe> ptr(lumi::DataPipeFactory::get()->create("Lumi2DB",con));
-    ptr->setAuthPath(authpath);
-    ptr->setSource(lumifile);
-    startClock=clock();
-    time(&t1);
-    ptr->retrieveData(runnumber);
-    time(&t2);
-    endClock=clock();
-  }catch(...){
-    std::cout<<"problem in loading run "<<runnumber<<" skip "<<std::endl;
-    throw;
-  }
-  printf("Elaspsed time %fs\n",difftime(t2,t1));
-  elapsedTime=((double) (endClock - startClock)) / CLOCKS_PER_SEC;
-  std::cout<<"CPU Time taken in seconds : "<<elapsedTime<<std::endl;
-  **/
   //
   //fill runsummary data
   //
@@ -67,6 +47,27 @@ int main(int argc, char** argv){
   }catch(const lumi::nonCollisionException& er){
     std::cout<<"not a collision run, skip "<<std::endl;
     return 0;
+  }catch(...){
+    std::cout<<"problem in loading run "<<runnumber<<" skip "<<std::endl;
+    throw;
+  }
+  printf("Elaspsed time %fs\n",difftime(t2,t1));
+  elapsedTime=((double) (endClock - startClock)) / CLOCKS_PER_SEC;
+  std::cout<<"CPU Time taken in seconds : "<<elapsedTime<<std::endl;
+  //
+  //fill lhx data
+  //
+  std::cout<<"filling hlx/dip data"<<std::endl;
+  
+  try{
+    std::auto_ptr<lumi::DataPipe> ptr(lumi::DataPipeFactory::get()->create("Lumi2DB",con));
+    ptr->setAuthPath(authpath);
+    ptr->setSource(lumifile);
+    startClock=clock();
+    time(&t1);
+    ptr->retrieveData(runnumber);
+    time(&t2);
+    endClock=clock();
   }catch(...){
     std::cout<<"problem in loading run "<<runnumber<<" skip "<<std::endl;
     throw;

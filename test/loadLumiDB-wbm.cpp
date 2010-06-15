@@ -47,10 +47,11 @@ int main(int argc, char** argv){
   printf("Elaspsed time %fs\n",difftime(t2,t1));
   elapsedTime=((double) (endClock - startClock)) / CLOCKS_PER_SEC;
   std::cout<<"CPU Time taken in seconds : "<<elapsedTime<<std::endl;
-
+  
   //
   //fill runsummary data
   //
+  
   try{
     std::cout<<"fill out runsummary data"<<std::endl;
     std::auto_ptr<lumi::DataPipe> runptr(lumi::DataPipeFactory::get()->create("CMSRunSummary2DB",con));
@@ -69,6 +70,7 @@ int main(int argc, char** argv){
   printf("Elaspsed time %fs\n",difftime(t2,t1));
   elapsedTime=((double) (endClock - startClock)) / CLOCKS_PER_SEC;
   std::cout<<"CPU Time taken in seconds : "<<elapsedTime<<std::endl;
+  
   //
   //fill hlt conf data
   //
