@@ -7,6 +7,7 @@
 #include <iostream>
 #include <time.h>
 #include <unistd.h>
+#include <cstdio>
 
 int main(int argc, char** argv){
   unsigned int runnumber;
