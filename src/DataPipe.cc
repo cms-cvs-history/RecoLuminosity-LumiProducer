@@ -7,3 +7,6 @@ void lumi::DataPipe::setSource( const std::string& source ){
 void lumi::DataPipe::setAuthPath( const std::string& authpath ){
   m_authpath=authpath;
 }
+void lumi::DataPipe::setMode( const std::string& mode ){
+  m_mode=mode;
+}
