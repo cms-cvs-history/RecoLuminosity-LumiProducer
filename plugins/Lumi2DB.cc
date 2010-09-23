@@ -298,11 +298,10 @@ lumi::Lumi2DB::writeAllLumiData(
       ::free(lumiIt->beamintensity_1);
       ::free(lumiIt->beamintensity_2);
     }else{
-      summaryData["bxindex"].setNull(true);
-      summaryData["beamintensity_1"].setNull(true);
-      summaryData["beamintensity_2"].setNull(true);
+      summaryData["CMSBXINDEXBLOB"].setNull(true);
+      summaryData["BEAMINTENSITYBLOB_1"].setNull(true);
+      summaryData["BEAMINTENSITYBLOB_2"].setNull(true);
     }
-
     //fetch a new id value 
     //insert the new row
     summaryInserter->processNextIteration();

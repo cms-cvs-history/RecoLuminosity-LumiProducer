@@ -36,7 +36,7 @@ int main(int argc, char** argv){
     std::auto_ptr<lumi::DataPipe> ptr(lumi::DataPipeFactory::get()->create("Lumi2DB",con));
     ptr->setAuthPath(authpath);
     ptr->setSource(lumifile);
-    ptr->setMode("beamintensity_only");
+    //ptr->setMode("beamintensity_only");
     startClock=clock();
     time(&t1);
     ptr->retrieveData(runnumber);
