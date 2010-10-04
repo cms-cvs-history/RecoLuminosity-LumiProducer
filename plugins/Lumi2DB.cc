@@ -120,12 +120,14 @@ lumi::Lumi2DB::writeBeamIntensityOnly(
   unsigned int comittedls=0;
   std::string setClause("CMSBXINDEXBLOB=:bxindex,BEAMINTENSITYBLOB_1=:beamintensity_1,BEAMINTENSITYBLOB_2=:beamintensity_2");
   std::string condition("RUNNUM=:runnum AND STARTORBIT=:startorbit AND LUMIVERSION=:lumiversion");
+  runnumber=irunnumber;
+  lumiversion=ilumiversion;
   for(lumiIt=lumiBeg;lumiIt!=lumiEnd;++lumiIt,++lumiindx){
     if(!session->transaction().isActive()){ 
       session->transaction().start(false);
-      coral::ITable& summarytable=session->nominalSchema().tableHandle(LumiNames::lumisummaryTableName());
-      summaryUpdater=summarytable.dataEditor().bulkUpdateRows(setClause,condition,inputData,totallumils);
     }
+    startorbit=lumiIt->startorbit;
+    //std::cout<<"runnumber "<<irunnumber<<" starorbit "<<startorbit<<" lumiversion "<<lumiversion<<" totallumils "<<totallumils<<std::endl;
     short nlivebx=lumiIt->nlivebx;
     if(nlivebx!=0){
       bxindex.resize(sizeof(short)*nlivebx);
@@ -140,17 +142,18 @@ lumi::Lumi2DB::writeBeamIntensityOnly(
       ::free(lumiIt->bxindex);
       ::free(lumiIt->beamintensity_1);
       ::free(lumiIt->beamintensity_2);
-    }else{
-      inputData["bxindex"].setNull(true);
-      inputData["beamintensity_1"].setNull(true);
-      inputData["beamintensity_2"].setNull(true);
+      coral::ITable& summarytable=session->nominalSchema().tableHandle(LumiNames::lumisummaryTableName());
+      summaryUpdater=summarytable.dataEditor().bulkUpdateRows(setClause,condition,inputData,totallumils);
+      summaryUpdater->processNextIteration();
+      summaryUpdater->flush();
+      ++comittedls;
     }
-    runnumber=irunnumber;
-    startorbit=lumiIt->startorbit;
-    lumiversion=ilumiversion;
-    summaryUpdater->processNextIteration();
-    summaryUpdater->flush();
-    ++comittedls;
+    //else{
+    //  inputData["bxindex"].setNull(true);
+    //  inputData["beamintensity_1"].setNull(true);
+    //  inputData["beamintensity_2"].setNull(true); 
+    //}
+   
     if(comittedls==Lumi2DB::COMMITLSINTERVAL){
       std::cout<<"\t committing in LS chunck "<<comittedls<<std::endl; 
       delete summaryUpdater;
@@ -284,6 +287,7 @@ lumi::Lumi2DB::writeAllLumiData(
     beamstatus = lumiIt->beammode;
 
     short nlivebx=lumiIt->nlivebx;
+    //std::cout<<"nlivebx "<<nlivebx<<std::endl;
     if(nlivebx!=0){
       bxindex.resize(sizeof(short)*nlivebx);
       beamintensity_1.resize(sizeof(float)*nlivebx);
@@ -297,12 +301,12 @@ lumi::Lumi2DB::writeAllLumiData(
       ::free(lumiIt->bxindex);
       ::free(lumiIt->beamintensity_1);
       ::free(lumiIt->beamintensity_2);
-    }else{
-      summaryData["CMSBXINDEXBLOB"].setNull(true);
-      summaryData["BEAMINTENSITYBLOB_1"].setNull(true);
-      summaryData["BEAMINTENSITYBLOB_2"].setNull(true);
     }
-    //fetch a new id value 
+    //else{
+    //  summaryData["CMSBXINDEXBLOB"].setNull(true);
+    //  summaryData["BEAMINTENSITYBLOB_1"].setNull(true);
+    //  summaryData["BEAMINTENSITYBLOB_2"].setNull(true);
+    //}
     //insert the new row
     summaryInserter->processNextIteration();
     summaryInserter->flush();
@@ -408,17 +412,28 @@ lumi::Lumi2DB::retrieveBeamIntensity(HCAL_HLX::DIP_COMBINED_DATA* dataPtr, Lumi2
     b.beamintensity_2=0;
     b.nlivebx=0;
   }else{
-    short a=0;
     b.bxindex=(short*)::malloc(sizeof(short)*lumi::N_BX);
     b.beamintensity_1=(float*)::malloc(sizeof(float)*lumi::N_BX);
     b.beamintensity_2=(float*)::malloc(sizeof(float)*lumi::N_BX);
+
+    
+    short a=0;//a is position in lumidetail array
     for(unsigned int i=0;i<lumi::N_BX;++i){
-      if(dataPtr->Beam[0].averageBunchIntensities[i]>0 || dataPtr->Beam[1].averageBunchIntensities[i]>0){
-	b.bxindex[a]=i;
-	b.beamintensity_1[a]=dataPtr->Beam[0].averageBunchIntensities[i];
-	b.beamintensity_2[a]=dataPtr->Beam[1].averageBunchIntensities[i];
-	//std::cout<<i<<" "<<b.beamintensity_1[a]<<" "<<b.beamintensity_2[a]<<std::endl;
+      if(i==0 && (dataPtr->Beam[0].averageBunchIntensities[0]>0 || dataPtr->Beam[1].averageBunchIntensities[0]>0) ){
+	b.bxindex[a]=0;
+	b.beamintensity_1[a]=dataPtr->Beam[0].averageBunchIntensities[0];
+	b.beamintensity_2[a]=dataPtr->Beam[1].averageBunchIntensities[0];
 	++a;
+	continue;
+      }
+      if(dataPtr->Beam[0].averageBunchIntensities[i-1]>0 || dataPtr->Beam[1].averageBunchIntensities[i-1]>0){
+	b.bxindex[a]=i;
+	b.beamintensity_1[a]=dataPtr->Beam[0].averageBunchIntensities[i-1];
+	b.beamintensity_2[a]=dataPtr->Beam[1].averageBunchIntensities[i-1];
+	++a;
+	//if(i!=0){
+	//  std::cout<<"beam intensity "<<dataPtr->sectionNumber<<" "<<dataPtr->timestamp-1262300400<<" "<<(i-1)*10+1<<" "<<b.beamintensity_1[a]<<" "<<b.beamintensity_2[a]<<std::endl;
+	//}
       }
     }
     b.nlivebx=a;
@@ -524,13 +539,22 @@ lumi::Lumi2DB::retrieveData( unsigned int runnumber){
 	h.bxindex=(short*)malloc(sizeof(short)*h.nlivebx);
 	h.beamintensity_1=(float*)malloc(sizeof(float)*h.nlivebx);
 	h.beamintensity_2=(float*)malloc(sizeof(float)*h.nlivebx);
+	if(h.bxindex==0 || h.beamintensity_1==0 || h.beamintensity_2==0){
+	  std::cout<<"malloc failed"<<std::endl;
+	}
+	//std::cout<<"h.bxindex size "<<sizeof(short)*h.nlivebx<<std::endl;
+	//std::cout<<"h.beamintensity_1 size "<<sizeof(float)*h.nlivebx<<std::endl;
+	//std::cout<<"h.beamintensity_2 size "<<sizeof(float)*h.nlivebx<<std::endl;
+
 	std::memmove(h.bxindex,beamIt->second.bxindex,sizeof(short)*h.nlivebx);
 	std::memmove(h.beamintensity_1,beamIt->second.beamintensity_1,sizeof(float)*h.nlivebx);
 	std::memmove(h.beamintensity_2,beamIt->second.beamintensity_2,sizeof(float)*h.nlivebx);
+
 	::free(beamIt->second.bxindex);beamIt->second.bxindex=0;
 	::free(beamIt->second.beamintensity_1);beamIt->second.beamintensity_1=0;
 	::free(beamIt->second.beamintensity_2);beamIt->second.beamintensity_2=0;
       }else{
+	//std::cout<<"h.nlivebx is zero"<<std::endl;
 	h.bxindex=0;
 	h.beamintensity_1=0;
 	h.beamintensity_2=0;
@@ -556,6 +580,8 @@ lumi::Lumi2DB::retrieveData( unsigned int runnumber){
     h.lumisectionquality=lumisummary->InstantLumiQlty;
     h.dtnorm=lumisummary->DeadTimeNormalization;
     h.lhcnorm=lumisummary->LHCNormalization;
+    unsigned int timestp=lumiheader->timestamp;
+    //std::cout<<"cmslsnum "<<ncmslumi<<"timestp "<<timestp<<std::endl;
     for(size_t i=0;i<lumi::N_BX;++i){
       lumi::Lumi2DB::PerBXData bET;
       lumi::Lumi2DB::PerBXData bOCC1;
@@ -567,8 +593,15 @@ lumi::Lumi2DB::retrieveData( unsigned int runnumber){
       h.bxET.push_back(bET);
 
       //bOCC1.idx=i+1;
+
       bOCC1.lumivalue=lumidetail->OccLumi[0][i];
       bOCC1.lumierr=lumidetail->OccLumiErr[0][i];
+      /**if(bOCC1.lumivalue*6.370>1.0e-04){
+	if(i!=0){
+	  std::cout<<i<<" detail "<<(i-1)*10+1<<" "<<(timestp-1262300400)<<" "<<bOCC1.lumivalue*6.37<<" "<<bOCC1.lumierr*6.37<<std::endl;
+	}
+      }
+      **/
       bOCC1.lumiquality=lumidetail->OccLumiQlty[0][i]; 
       h.bxOCC1.push_back(bOCC1);
           
