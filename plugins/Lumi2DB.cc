@@ -142,18 +142,16 @@ lumi::Lumi2DB::writeBeamIntensityOnly(
       ::free(lumiIt->bxindex);
       ::free(lumiIt->beamintensity_1);
       ::free(lumiIt->beamintensity_2);
-      coral::ITable& summarytable=session->nominalSchema().tableHandle(LumiNames::lumisummaryTableName());
-      summaryUpdater=summarytable.dataEditor().bulkUpdateRows(setClause,condition,inputData,totallumils);
-      summaryUpdater->processNextIteration();
-      summaryUpdater->flush();
-      ++comittedls;
+    }else{
+      bxindex.resize(0);
+      beamintensity_1.resize(0);
+      beamintensity_2.resize(0);
     }
-    //else{
-    //  inputData["bxindex"].setNull(true);
-    //  inputData["beamintensity_1"].setNull(true);
-    //  inputData["beamintensity_2"].setNull(true); 
-    //}
-   
+    coral::ITable& summarytable=session->nominalSchema().tableHandle(LumiNames::lumisummaryTableName());
+    summaryUpdater=summarytable.dataEditor().bulkUpdateRows(setClause,condition,inputData,totallumils);
+    summaryUpdater->processNextIteration();
+    summaryUpdater->flush();
+    ++comittedls;
     if(comittedls==Lumi2DB::COMMITLSINTERVAL){
       std::cout<<"\t committing in LS chunck "<<comittedls<<std::endl; 
       delete summaryUpdater;
@@ -301,12 +299,11 @@ lumi::Lumi2DB::writeAllLumiData(
       ::free(lumiIt->bxindex);
       ::free(lumiIt->beamintensity_1);
       ::free(lumiIt->beamintensity_2);
+    }else{
+      bxindex.resize(0);
+      beamintensity_1.resize(0);
+      beamintensity_2.resize(0);
     }
-    //else{
-    //  summaryData["CMSBXINDEXBLOB"].setNull(true);
-    //  summaryData["BEAMINTENSITYBLOB_1"].setNull(true);
-    //  summaryData["BEAMINTENSITYBLOB_2"].setNull(true);
-    //}
     //insert the new row
     summaryInserter->processNextIteration();
     summaryInserter->flush();

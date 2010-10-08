@@ -15,6 +15,10 @@ namespace lumi{
     void setSource( const std::string& source );
     void setAuthPath( const std::string& authpath );
     void setMode( const std::string& mode );
+    std::string getSource() const;
+    std::string getMode() const;
+    std::string getAuthPath() const;
+    
   protected:
     std::string m_dest;
     std::string m_source;

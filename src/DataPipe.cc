@@ -10,3 +10,12 @@ void lumi::DataPipe::setAuthPath( const std::string& authpath ){
 void lumi::DataPipe::setMode( const std::string& mode ){
   m_mode=mode;
 }
+std::string lumi::DataPipe::getSource()const{
+  return m_source;
+}
+std::string lumi::DataPipe::getMode()const{
+  return m_mode;
+}
+std::string lumi::DataPipe::getAuthPath()const{
+  return m_authpath;
+}
