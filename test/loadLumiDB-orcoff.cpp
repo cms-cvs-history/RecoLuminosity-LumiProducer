@@ -25,9 +25,9 @@ int main(int argc, char** argv){
   time_t t1,t2;
   edmplugin::PluginManager::Config config;
   edmplugin::PluginManager::configure(edmplugin::standard::config());
-  //const std::string con("sqlite_file:wbm.db");
+  const std::string con("sqlite_file:lumi.db");
   //const std::string con("oracle://devdb10/cms_xiezhen_dev");
-  const std::string con("oracle://cms_orcoff_prep/cms_lumi_dev_offline");
+  //const std::string con("oracle://cms_orcoff_prep/cms_lumi_dev_offline");
   const std::string authpath("/afs/cern.ch/user/x/xiezhen");
   //fill lhx data
   
@@ -36,6 +36,7 @@ int main(int argc, char** argv){
     std::auto_ptr<lumi::DataPipe> ptr(lumi::DataPipeFactory::get()->create("Lumi2DB",con));
     ptr->setAuthPath(authpath);
     ptr->setSource(lumifile);
+    //ptr->setMode("beamintensity_only");
     startClock=clock();
     time(&t1);
     ptr->retrieveData(runnumber);
@@ -52,7 +53,7 @@ int main(int argc, char** argv){
   //
   //fill runsummary data
   //
-  try{
+  /**try{
     std::cout<<"fill out runsummary data"<<std::endl;
     std::auto_ptr<lumi::DataPipe> runptr(lumi::DataPipeFactory::get()->create("CMSRunSummary2DB",con));
     //runptr->setSource("oracle://cms_omds_lb/CMS_RUNINFO");
@@ -131,5 +132,6 @@ int main(int argc, char** argv){
   }
   printf("Elaspsed time %fs\n",difftime(t2,t1));
   std::cout<<"CPU Time taken in seconds : "<<elapsedTime<<std::endl;
+  **/
   return 0;
 }
