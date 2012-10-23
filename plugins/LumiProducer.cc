@@ -18,7 +18,7 @@ from the configuration file, the DB is not implemented yet)
 //                   David Dagenhart
 //       
 //         Created:  Tue Jun 12 00:47:28 CEST 2007
-// $Id: LumiProducer.cc,v 1.26 2012/02/29 13:52:13 xiezhen Exp $
+// $Id: LumiProducer.cc,v 1.26.2.1 2012/09/25 21:30:57 slava77 Exp $
 
 #include "FWCore/Framework/interface/EDProducer.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
@@ -751,6 +751,13 @@ LumiProducer::fillLSCache(unsigned int luminum){
 	const void* hltacceptblob_StartAddress=hltacceptblob.startingAddress();
 	unsigned int* hltaccepts=(unsigned int*)::malloc(hltacceptblob.size());
 	std::memmove(hltaccepts,hltacceptblob_StartAddress,hltacceptblob.size());
+	unsigned int nhltaccepts = sizeof(hltaccepts)/sizeof(unsigned int);
+        if(nhltaccepts > 0 && m_runcache.HLTPathNames.size() == 0){
+          edm::LogWarning("CorruptOrMissingHLTData")<<"Got "<<nhltaccepts
+<<" hltaccepts, but the run chache is empty. hltdata will  not be written";
+            break;
+        }
+
 	for(unsigned int i=0;i<sizeof(hltaccepts)/sizeof(unsigned int);++i){
 	  HLTData hlttmp;
 	  hlttmp.pathname=m_runcache.HLTPathNames[i];
